@@ -1,0 +1,125 @@
+J/A+A/581/A47       Lines and continuum sky emission in the NIR  (Oliva+, 2015)
+================================================================================
+Lines and continuum sky emission in the near infrared: observational constraints
+from deep high spectral resolution spectra with GIANO-TNG.
+    Oliva E., Origlia L., Scuderi S., Benatti S., Carleo I., Lapenna E.,
+    Mucciarelli A., Baffa C., Biliotti V., Carbonaro L., Falcini G., Giani E.,
+    Iuzzolino M., Massi F., Sanna N., Sozzi M., Tozzi A., Ghedina A.,
+    Ghinassi F., Lodi M., Harutyunyan A., Pedani M.
+   <Astron. Astrophys. 581, A47 (2015)>
+   =2015A&A...581A..47O
+================================================================================
+ADC_Keywords: Spectra, infrared ; Spectroscopy
+Keywords: line: identification - instrumentation: spectrograph -
+          infrared: general - techniques: spectroscopic
+
+Abstract:
+    Determining the intensity of lines and continuum airglow emission in
+    the H-band is important for the design of faint-object infrared
+    spectrographs. Existing spectra at low/medium resolution cannot
+    disentangle the true sky-continuum from instrumental effects (e.g.
+    diffuse light in the wings of strong lines).
+    We aim to obtain, for the first time, a high resolution infrared
+    spectrum deep enough to set significant constraints on the continuum
+    emission between the lines in the H-band.
+    During the second commissioning run of the GIANO high-resolution
+    spectrograph at the La Palma Observatory, we pointed the instrument
+    directly to the sky and obtained a deep spectrum that extends from
+    0.97 to 2.4 micron and includes the whole H-band. The spectrum shows
+    about 1500 emission lines, a factor of two more than in previous
+    works. Of these, 80% are identified as OH transitions; half of these
+    are from highly excited molecules (hot-OH component).
+    The other lines are attributable to O_2_ or unidentified. Several of
+    the faint lines are in spectral regions that were previously believed
+    to be free of lines emission. The continuum in the H-band is
+    marginally detected at a level of about 300photons/m^2^/s/arcsec^2^/um.
+    The observed spectrum and the list of observed sky-lines are published
+    in electronic format. Our measurements indicate that the sky continuum
+    in the H-band could be even darker than previously believed. However,
+    the myriad of airglow emission lines severely limits the spectral
+    ranges where very low background can be effectively achieved with
+    low/medium resolution spectrographs.
+    We identify a few spectral bands that could still remain quite dark at
+    the resolving power foreseen for VLT-MOONS (R~6,600).
+
+Description:
+    Tables 1 and 2 list the wavelengths and relative photon fluxes of the
+    OH airglow lines (Table 1) and the wavelengths and relative photon
+    fluxes of other airglow lines (Table 2), measured in the Near-Infrared
+    with the echelle spectrometer GIANO at the Telescopio Nazionale
+    Galileo. The intensities of the lines (flux) are expressed in units of
+    photons/m^2^/s, normalised to the intensity of the brightest line (in
+    Table1), which is set to 10^4^. The wavelengths are in vacuum and
+    expressed in Angstrom. The Wavelengths in Table 1 are computed from
+    the most complete and accurate OH molecular parameters available in
+    the literature (Bernath & Colin, 2009, J. Mol. Spec., 257, 20). Table
+    4 contains the observed spectrum in the Y,J and H photometric bands.
+    The wavelengths are in vaccuum and in Angstrom. The spectral flux is
+    expressed in units of photons/m^2^/s/Angstrom, please note that the
+    flux calibration is uncertain (see the paper for details).
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+table1.dat     55      603   OH airglow line wavelengths and relative fluxes
+table2.dat     30      293  *Non-OH line wavelengths and relative fluxes
+table4.dat     18    49864   Airglow spectrum covering the Y, J, H-bands
+--------------------------------------------------------------------------------
+Note on table2.dat: Identification based on the HITRAN database.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  F9.3  0.1nm   lambda1   [9792/22984] Vacuum wavelength of the first
+                                    line of the doublet ({AA})
+  11- 24  A14   ---     Iden1     Line identification (1)
+  26- 34  F9.3  0.1nm   lambda2   [9791/22988] Vacuum wavelength of the second
+                                    line of the doublet ({AA})
+  36- 49  A14   ---     Iden2     Line identification (1)
+  51- 55  I5    ---     Flux      [3/10000] Relative line photon flux of doublet
+--------------------------------------------------------------------------------
+Note (1): Lines are grouped in pairs, one for each lambda-doublet.
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  8  F8.2  0.1nm   lambda    [10489/21794] Vacuum wavelength ({AA})
+  11- 22  A12   ---     Iden      Line identification
+  26- 28  I3    ---     Flux      [4/820] Relative line photon flux
+      30  A1    ---     Flag      [a-l] Notes to individual lines (1)
+--------------------------------------------------------------------------------
+Note (1): Notes as follows:
+   a = broad
+   b = scales like O2 lines
+   c = blend with OH [7-4]P1(7.5)
+   d = blend
+   e = blend with OH [8-5]R1(3.5)
+   f = blend with [8-5]R1(2.5)
+   g = blend with [8-5]R1(1.5)
+   h = possible doublet
+   i = broad, asymmetric
+   j = blend with OH [4,2]P2(9.5)
+   k = blend with OH [4-2]Q1f(3.5)
+   l = blend with OH [6,4]R1(16.5))
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table4.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label     Explanations
+--------------------------------------------------------------------------------
+   1-  9  F9.3  0.1nm     lambda    [9790/18022] Vacuum wavelength ({AA})
+  11- 18  F8.4 10/m2/s/nm Flux      [-1/421] Spectral flux (photons/m^2^/s/{AA})
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Ernesto Oliva, oliva(at)arcetri.astro.it,
+    Fabrizio Massi, fmassi(at)arcetri.astro.it
+
+================================================================================
+(End)     Ernesto Oliva [INAF - Arcetri], Patricia Vannier [CDS]     09-Jul-2015

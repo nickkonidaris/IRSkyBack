@@ -1,0 +1,9 @@
+*.pyc
+doc/build/*
+*coverage*
+*.swp
+*ropeproject*
+*ipynb_checkpoints*
+hide.py
+report.txt
+*.swo
