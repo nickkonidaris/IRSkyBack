@@ -1,0 +1,14 @@
+Metadata-Version: 1.1
+Name: IRSkyBack
+Version: 0.0.1
+Summary: Swope data reduction
+Home-page: https://github.com/nickkonidaris/IRSkyBack
+Author: Nicholas P. Konidaris
+Author-email: npk@carnegiescience.edu
+License: GNU General Public License v3.0
+Description-Content-Type: UNKNOWN
+Description: None
+Keywords: Python
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: Programming Language :: Python
