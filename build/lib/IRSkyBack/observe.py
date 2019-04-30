@@ -262,25 +262,113 @@ def create_figure_for_irmos_v1():
 
 
 
-def observe_maihara_region_custom(Rs=[3200], fracs=[0.3], labels=[""]):
+def observe_maihara_region_custom(combos=[ (3200, .3, "k")], labels=[""]):
 
-    pl.clf()
     pl.figure(1)
 
-    for frac in fracs:
-        for R in Rs:
-            lp, sp, spl, prof_l, prof = to_observed(ll, ss, 16000/R*AA,
-                                                    N=125*512*frac*3, nsamp=2.8)
-            # pl.step(lp, -2.5*np.log10(np.abs(spl)))
-            pl.step(lp, spl)
+    for combo in combos:
+        R, frac, fmt = combo
+        lp, sp, spl, prof_l, prof = to_observed(ll, ss, 16000/R*AA,
+                                                N=125*512*frac*3, nsamp=2.8)
+        pl.step(lp, -2.5*np.log10(np.abs(spl)), fmt)
+        #pl.step(lp, spl)
 
-    pl.ylim(6.5, -1.5)
-    pl.ylim(-0.1, 0.5)
+    pl.ylim(5, -2)
+    #pl.ylim(-0.1, 0.5)
+    pl.legend(labels)
     pl.xlim(16400, 16900)
     pl.axvline(16600, color='red')
     pl.axvline(16700, color='red')
     pl.axhline(3+.75, color='black')
     pl.grid(True)
 
-    pl.xlabel(r"$Wavelength [\AA]")
-    pl.ylabel(r"Flux [put units here]")
+    pl.xlabel(r"Wavelength [$\rm \AA$]")
+    pl.ylabel(r"$F_\lambda$ [magnitude]")
+
+
+def create_figure_for_irmos_vSAC():
+    """ """
+
+    scales = [1.4/2.8, 1.0/2.8, 0.9/2.8]
+    pl.figure(3, figsize=(8, 4))
+    pl.clf()
+    pl.figure(2, figsize=(8, 4))
+    pl.clf()
+    pl.figure(1, figsize=(8, 4))
+    pl.clf()
+
+    THPT = .35
+    GOAL = 2.0
+    THRESH = 3
+    GRATING = 0.9
+
+    pl.figure(2)
+    pl.xlabel("Spectral Resolution")
+    pl.ylabel(r"$\frac{\left(%s x RN\right)^2}{sky\ flux} [min]$" % GOAL)
+    pl.title("Time to sky shot noise %sx RN for Olivia bgd $300\ \gamma/m^2/s/as^2/\mu m$" % GOAL)
+    labels = []
+    for RN in [3.0, 5.5]:
+        for scale in scales:
+            labels.append("RN: %s, Scale: %1.2f\"/px" % (RN, scale))
+            R, f, s = fraction_of_pixels_above(thresh=THRESH, frac=GRATING,
+                                               scale=scale, et=0.1*ur.min,
+                                               THPT=THPT)
+
+            pl.figure(2)
+
+            # BGD Limit is sqrt(signal x exptime) == RN*goal
+            # exptime == (RN*goal)**2/signal
+            goal = (RN*GOAL)
+            exptime = goal**2/s.value*ur.second
+
+            pl.plot(R, exptime.to(ur.minute))
+            pl.grid()
+
+    pl.legend(labels)
+    pl.grid(True)
+    pl.ylim(0,50)
+
+    pl.figure(1)
+    threshs = [3]
+    gratings  = {"vphg": .9, "surface relief": 0.3}
+    legends = []
+    for thresh in threshs:
+        for gname, frac in gratings.items():
+            legends.append("Grating: %s thresh: %sx" % (gname, thresh))
+            R, f, s = fraction_of_pixels_above(thresh=thresh, frac=frac,
+                                           scale=scale, et=1*ur.min,
+                                               THPT=THPT)
+
+
+            pl.plot(R, 1-f, '+-')
+            pl.ylim(0, 1)
+            pl.grid()
+
+    pl.xlabel("Spectral resolution")
+    pl.ylabel("Fraction of pixels some threshold above Olivia bgd")
+    pl.title("Fraction of pixels above the background level for different R")
+    pl.legend(legends)
+    pl.title("Fraction of pixels above background")
+    pl.grid(True)
+
+
+    pl.figure(3)
+    pl.title("Noise")
+    thresh = 2
+    scale = 0.43
+    et = 120*ur.second
+    R, f, s = fraction_of_pixels_above(thresh=thresh, frac=0.3,
+                                        scale=scale, et=1*ur.min,
+                                        THPT=THPT)
+    s = s/ur.second
+    shotnoise = np.sqrt(s * et / thresh)
+
+    pl.loglog(R, shotnoise)
+    pl.axhline(3)
+
+    fmt = "Noise bgd thresh: %sx | thp: %s | et: %s | scale: %sas/pix | grating: %s"
+    legends = [fmt % (thresh, THPT, et, scale, "surface relief"),
+               "Read noise"]
+    pl.legend(legends)
+    pl.ylabel("Noise")
+    pl.grid(True)
