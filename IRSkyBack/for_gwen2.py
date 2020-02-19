@@ -25,6 +25,7 @@ hc = cc.h * cc.c
 
 
 # From Mirmos-1000-v3
+# [ ruling density, central wavelength ]
 Y = [851, 10500]
 J = [685, 12530]
 H = [523, 16370]
