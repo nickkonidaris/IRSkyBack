@@ -1,5 +1,4 @@
 
-
 from astropy import units as ur
 from astropy import constants as cc
 
@@ -25,13 +24,16 @@ ss = ss.to(ur.photon / ur.s / ur.cm**2 / ur.angstrom)
 
 hc = cc.h * cc.c
 
-Res = 4000 # with 2.5 pixel slit
 
-# FRom Mirmos-1000-v3
+# From Mirmos-1000-v3
 Y = [851, 10500]
 J = [685, 12530]
 H = [523, 16370]
 K = [396, 22000]
+
+
+# What Gwen Wants:
+# 1 pixel slit, 2 pixel, and 2.5 pixel slit.
 
 import numpy as np
 
@@ -40,17 +42,44 @@ MOS_SLT_WIDTH = 0.7 # Slit width
 aerial = MOS_PIX_SCALE * MOS_SLT_WIDTH
 
 # IRMOS spectrum<
+Res = 4000 # with 2.5 pixel slit
+slitwidth = 2.5
 beam_d = 118
 frac = 0.9
+
+import datetime
+
+now = datetime.datetime.now()
+
+
 for bandname in ['Y', 'J', 'H', 'K']:
     band = eval(bandname)
-    lp, sp, spl, prof_l, prof = OBS.to_observed(ll, ss, band[1]/Res*AA,
-                                                N=band[0]*beam_d * frac,
-                                                nsamp=2.8)
-    ep = (hc/lp).to(ur.erg) * spl * aerial
-    np.savetxt("/Volumes/GoogleDrive/Team Drives/F-IRMOS/for_gwen/band_%s_v4.txt" % bandname, 
-        np.array([lp, ep]).T)
-    print(bandname, np.median(ep))
+    for Res in np.arange(2000, 5500, 500):
+        for nsamp in [1.0, 2.0, 2.5]:
+            lp, sp, spl, prof_l, prof = OBS.to_observed(ll, ss, band[1]/Res*AA,
+                                                        N=band[0]*beam_d * frac,
+                                                        nsamp=nsamp)
+            epp = (hc/lp).to(ur.erg)
+            ep = epp * spl * aerial
+            header = f"""
+Created on {now}
+
+Spectral Resolution: {Res} for a slit of {slitwidth} pixel.
+
+Slit is {nsamp} wide.
+Assume {frac}x lines are illuminated.
+Beam diameter {beam_d} mm
+
+
+Delivered resolution is thus {Res*slitwidth/nsamp}
+Units per column:
+    {lp.unit} 
+    {(epp.unit/ur.photon*ss).unit}
+            """
+            np.savetxt("/Volumes/GoogleDrive/Team Drives/F-IRMOS/for_gwen/band_%s_%s_%s_v5.txt" % \
+                    (bandname, Res, nsamp), np.array([lp, ep]).T,
+                    header=header)
+            print(bandname, np.median(ep), Res, nsamp)
 
 
 

@@ -15,6 +15,10 @@ import importlib
 import IRSkyBack.reader as reader
 
 
+import scipy
+from scipy.interpolate import interp1d as II
+
+
 ll, ss = reader.load()
 # ss = ss.to(ur.photon / ur.micron / ur.meter**2 / ur.second)
 
@@ -34,11 +38,14 @@ Fl_units = ur.photon/ur.AA/ur.m**2/ur.second
 def to_new_fwhm_box1d(ll, ss, width, nsamp=3):
     """ Use box kernel to convolve down and resample spectrum """
 
-    nres = np.round(width/dl)
-    npix = np.int(np.round(nres/nsamp))
-    # print("Width of {0:1.4f} is {1:1.2f} pix".format(width, nres))
-    kernel = CC.Box1DKernel(nres)
+    dl = np.median(np.diff(ll))
+    nres = width/dl # The number of pixels in ll that constitute a slit
+    # The number of pixels in ll that make one pixel in the observed spectrum
+    npix = np.int(np.round(nres/nsamp)) 
+    print("Width of {0:1.4f} is {1:1.2f} pix".format(width, nres))
+    kernel = CC.Box1DKernel(np.round(nres))
     sp = scipy_convolve(ss, kernel, mode='same', method='direct')
+
 
     return ll, sp, npix
 
@@ -66,7 +73,13 @@ def to_observed(ll, ss, width, N=125*1200, A_B=3e-9, nsamp=3):
 
     spl = scipy_convolve(sp, kernel, mode='same', method='direct')
 
-    return ll[::npix], sp[::npix], spl[::npix], dl, GRF
+
+    fun = II(ll.to(AA).value, spl)
+
+    actual_ll = np.arange(ll[0].to(AA).value, ll[-1].to(AA).value, width.to(AA).value/nsamp)
+    actual_sp = fun(actual_ll)
+
+    return actual_ll, sp[::npix], actual_sp, dl, GRF
 
 
 def observe_maihara_region():
