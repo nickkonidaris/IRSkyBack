@@ -9,8 +9,10 @@ import numpy as np
 
 def fitted_profile(lam, lam_blaze, lam0, f, N, A_B=1e-9):
     """ lam is the wavelength, _blaze is blaze wavelength, lam0 is the on-axis
-    wavelength, and f is the focal length, N is number of elements
-    illuminated"""
+    wavelength, and f is a dimensionless number from 0 to 1 representing the
+    ratio of the groove width to groove spacing, N is number of elements
+    illuminated. Note typical surface relief gratings have f=0.25 and VPHG
+    are f=0.9"""
 
     a = np.pi * lam/lam0
     b = np.pi*(lam - lam_blaze)/lam0 * f
